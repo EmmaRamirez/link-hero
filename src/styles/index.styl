@@ -6,11 +6,10 @@ footer
   margin: 0 auto;
   max-width: 40rem;
 
-
 header
   background: linear-gradient(to left, purple, red);
   border-bottom: 4px solid #ddd;
-  color: #f;
+  color: #fff;
   margin-top: 1rem;
   text-align: center;
   padding: 1rem;
@@ -34,10 +33,62 @@ form
     color: white;
     display: inline-block;
     padding: .25rem .75rem;
+    &.add-link-button
+      margin-left: 5.25rem;
+    &.tiny
+      font-size: 1rem;
+      &:active
+        border-bottom: 0 solid transparent;
+        transform: translateY(4px);
 
-.fa-star[data-favorite=true],
+&[data-hidden='true']
+  display: none;
+  transform: scale(0);
+&[data-hidden='false']
+  display: block;
+  transform: scale(1);
+  transition: 300ms all;
+
+.fa-star[data-favorite='a'],
 .fa-star:hover
   color: gold;
+
+.link-form
+  background: #eee;
+  border: 1px solid #ddd;
+  border-left: 4px solid purple;
+  border-right: 4px solid purple;
+  box-shadow: -4px 4px 1rem rgba(black, 0.1);
+  margin-left: -1rem;
+  padding: 1rem;
+  position: absolute;
+  top: 11rem;
+  z-index: 10;
+  width: 40rem;
+  &::before
+    border-color: transparent transparent #ddd transparent;
+    border-style: solid;
+    border-width: 1rem;
+    content: '';
+    display: block;
+    height: 0;
+    position: absolute;
+    right: 6rem;
+    top: -2rem;
+    width: 0;
+
+  label
+    display: inline-block;
+    padding: .25rem;
+  input
+    padding: .25rem;
+
+.remove-all-links
+  color: red;
+  display: block;
+  font-size: small;
+  margin-right: 1rem;
+  text-align: right;
 
 .link
   background: #eee;
@@ -56,11 +107,23 @@ form
     a
       color: darken(red, 15%);
   .tag
-    background: #222;
-    border-radius: 16px;
-    color: #eee;
+    background: #ddd;
+    color: #222;
     font-size: .8rem;
     padding: .5rem;
     position: absolute;
     right: 5%;
     top: 25%;
+  .delete-link
+    color: #aaa;
+    position: absolute;
+    opacity: 0;
+    right: -5%;
+    top: 25%;
+    &:hover
+      cursor: pointer;
+  &:hover
+    .delete-link
+      color: #333;
+      opacity: 1;
+      transition: 300ms all;
