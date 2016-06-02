@@ -6,7 +6,11 @@
   let linkFilter = document.querySelector('.link-filter');
   let linkForm = document.querySelector('.link-form');
   let removeAllLinks = document.querySelector('.remove-all-links');
+  let exportLink = document.querySelector('.export-all-links');
+  let importLink = document.querySelector('.import-all-links');
+  let linkExportImport = document.querySelector('.link-export-import');
   let tag;
+  let tags;
   let links = [
     {
       url: 'http://www.google.com',
@@ -156,6 +160,23 @@
     }
   }
 
+  function handleExportLink() {
+    exportLink.addEventListener('click', function () {
+      linkExportImport.setAttribute('data-hidden', 'false');
+      let resultString = '';
+      event.preventDefault();
+      for (let i = 0; i < links.length; i++) {
+        resultString += links[i].url + '|' + links[i].name + '|' + links[i].tags[0] + '|' + links[i].favorite + '|';
+      }
+      resultString += ';';
+      linkExportImport.textContent = resultString;
+    });
+  }
+
+  function handleImportLink() {
+
+  }
+
   function handleLinkFilter() {
     linkFilter.addEventListener('keydown', function () {
       let filterString = this.value;
@@ -173,6 +194,7 @@
   }
 
   function init() {
+    linkExportImport.setAttribute('data-hidden', 'true');
     loadLinks();
     createLinks();
     handleFavoriteStar();
@@ -181,6 +203,8 @@
     handleAddLink();
     handleAddNewLink();
     handleRemoveAllLinks();
+    handleExportLink();
+    handleImportLink();
   }
 
   init();
