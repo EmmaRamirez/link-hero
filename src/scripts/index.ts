@@ -1,8 +1,11 @@
-require('../styles/index.styl');
+//import * from './interfaces';
 
+let links = [
+  {
+    url: 'http://www.google.com',
+    name: 'Google',
+    tag: 'javascript'
+  }
+];
 
-function hello() {
-  alert('Hi');
-}
-
-hello();
+console.log(links[0].name);

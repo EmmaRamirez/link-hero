@@ -2,6 +2,7 @@
 <html lang='en'>
   <head>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
+    <link rel='stylesheet' href='./styles/index.css'>
   </head>
   <body>
     <header>
@@ -13,7 +14,21 @@
         <button class='link-add'>+</button>
       </form>
       <div class='link-container'>
-
+        <div class='link'>
+          <i class='fa fa-star' data-favorite=true></i>
+          <a href='#'>
+            Name of Link :]
+          </a>
+        </div>
+        <div class='link'>
+          <i class='fa fa-star' data-favorite=false></i>
+          <a href='#' title='text'>
+            React and Typescript: A Match Made in Heaven
+          </a>
+          <div class='tag'>
+            Javascript
+          </div>
+        </div>
       </div>
     </main>
     <script src='./scripts/bundle.js'></script>
