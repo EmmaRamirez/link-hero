@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang='en'>
   <head>
+    <title>Link Hero</title>
     <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css'>
     <link rel='stylesheet' href='./styles/index.css'>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/store.js/1.3.20/store.min.js'></script>
   </head>
   <body>
     <header>
@@ -11,25 +13,20 @@
     <main>
       <form>
         <input class='link-filter' type='text' placeholder='filter...'>
-        <button class='link-add'>+</button>
+        <button class='link-add'><i class='fa fa-plus'></i></button>
+        <div class='link-form' data-hidden='true'>
+          <label>URL: <input type='text' class='link-url' placeholder='http://example.com'></label>
+          <label>Name: <input type='text' class='link-name' placeholder='Example Website'></label>
+          <label>Tags <input type='text' class='link-tags' placeholder='e.g. javascript'></label>
+          <label>Favorite: <input type='checkbox' class='link-favorite'></label>
+          <button class='tiny add-link-button'>Add Link</button>
+        </div>
       </form>
       <div class='link-container'>
-        <div class='link'>
-          <i class='fa fa-star' data-favorite=true></i>
-          <a href='#'>
-            Name of Link :]
-          </a>
-        </div>
-        <div class='link'>
-          <i class='fa fa-star' data-favorite=false></i>
-          <a href='#' title='text'>
-            React and Typescript: A Match Made in Heaven
-          </a>
-          <div class='tag'>
-            Javascript
-          </div>
-        </div>
       </div>
+      <p>
+        <a href='#' class='remove-all-links'>Remove All Links</a>
+      </p>
     </main>
     <script src='./scripts/bundle.js'></script>
   </body>
