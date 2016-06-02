@@ -83,10 +83,15 @@ form
   input
     padding: .25rem;
 
+.export-all-links,
+.import-all-links,
+.remove-all-links
+  display: inline-block;
+  font-size: small;
+  margin-left: 1rem;
+
 .remove-all-links
   color: red;
-  display: block;
-  font-size: small;
   margin-right: 1rem;
   text-align: right;
 
@@ -114,6 +119,10 @@ form
     position: absolute;
     right: 5%;
     top: 25%;
+    &[data-tag='javascript']
+      background: #EBEB2A;
+    &[data-tag='python']
+      background: #F571EC;
   .delete-link
     color: #aaa;
     position: absolute;
@@ -127,3 +136,7 @@ form
       color: #333;
       opacity: 1;
       transition: 300ms all;
+textarea
+  margin: 1rem;
+  padding: 1rem;
+  width: calc(100% - 2rem);
