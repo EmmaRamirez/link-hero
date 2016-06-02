@@ -11,25 +11,13 @@
     {
       url: 'http://www.google.com',
       name: 'Google',
-      tag: 'javascript',
+      tags: ['javascript'],
       favorite: 'a'
     },
     {
       url: 'http://learnpythonthehardway.org/book/',
       name: 'Learn Python the Hard Way',
-      tag: 'python',
-      favorite: 'a'
-    },
-    {
-      url: 'http://www.google.com',
-      name: 'Google2',
-      tag: 'javascript',
-      favorite: 'b'
-    },
-    {
-      url: 'https://entrepreneurs.maqtoob.com/the-37-best-websites-to-learn-something-new-895e2cb0cad4#.ss2lwydh8',
-      name: '37 Best Websites To Learn Something New',
-      tag: '',
+      tags: ['python'],
       favorite: 'a'
     },
   ];
@@ -65,9 +53,9 @@
     });
 
     for (let i = 0; i < links.length; i++) {
-      if (links[i].tag !== '') {
-        tag = `<div class='tag' data-tag='${links[i].tag}'>
-          ${links[i].tag}
+      if (links[i].tags !== []) {
+        tag = `<div class='tag' data-tag='${links[i].tags[0]}'>
+          ${links[i].tags[0]}
         </div>`;
       } else {
         tag = '';
@@ -75,7 +63,7 @@
       linkContainer.innerHTML += `
         <div class='link'>
           <i class='fa fa-star favorite-star' data-index=${i} data-favorite=${links[i].favorite}></i>
-          <a href='${links[i].url}'>
+          <a title='${links[i].url}' href='${links[i].url}'>
             ${links[i].name}
           </a>
           ${tag}
@@ -139,10 +127,12 @@
         linkFavorite = 'b';
       }
 
+      linkTags = linkTags.split(', ');
+
       links.push({
         url: linkUrl,
         name: linkName,
-        tag: linkTags,
+        tags: linkTags,
         favorite: 'b'
       });
 
@@ -166,11 +156,28 @@
     }
   }
 
+  function handleLinkFilter() {
+    linkFilter.addEventListener('keydown', function () {
+      let filterString = this.value;
+      function matchesSubString(obj) {
+        if (obj.name.includes(filterString)) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+      links = links.filter(matchesSubString);
+      createLinks();
+
+    });
+  }
+
   function init() {
     loadLinks();
     createLinks();
     handleFavoriteStar();
     handleDeleteLink();
+    handleLinkFilter();
     handleAddLink();
     handleAddNewLink();
     handleRemoveAllLinks();
