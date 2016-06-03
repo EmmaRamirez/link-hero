@@ -123,14 +123,19 @@ form
       background: #EBEB2A;
     &[data-tag='python']
       background: #F571EC;
-  .delete-link
+    &[data-tag='haskell']
+      background: #A654D6;
+  .delete-link,
+  .edit-link
     color: #aaa;
     position: absolute;
     opacity: 0;
-    right: -5%;
-    top: 25%;
+    right: -3%;
+    top: 15%;
     &:hover
       cursor: pointer;
+  .edit-link
+    top: 50%;
   &:hover
     .delete-link
       color: #333;
