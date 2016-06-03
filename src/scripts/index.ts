@@ -38,6 +38,7 @@
     }
   }
 
+
   function createLinks () {
     linkContainer.innerHTML = '';
     links.sort(function (a, b) {
@@ -67,7 +68,7 @@
       linkContainer.innerHTML += `
         <div class='link'>
           <i class='fa fa-star favorite-star' data-index=${i} data-favorite=${links[i].favorite}></i>
-          <a title='${links[i].url}' href='${links[i].url}'>
+          <a target="_blank" title='${links[i].url}' href='${links[i].url}'>
             ${links[i].name}
           </a>
           ${tag}
@@ -87,6 +88,7 @@
         links[i].favorite = f;
         favorite.setAttribute('data-favorite', f);
         saveLinks();
+        createLinks();
       });
     });
 
