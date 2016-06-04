@@ -14,8 +14,17 @@ header
   margin-top: 1rem;
   text-align: center;
   padding: 1rem;
+  position: relative;
   h1
     margin: 0;
+  .settings-icon
+    cursor: pointer;
+    font-size: 1.5rem;
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    &:active
+      color: darken(purple, 15%);
 
 form
   padding: 1rem;
@@ -24,7 +33,7 @@ form
   .link-filter
     border: 1px solid #ccc;
     border-bottom: 4px solid #ddd;
-    margin-left: 5rem;
+    margin-left: 3rem;
     padding: .25rem;
   button
     border: 1px solid darken(purple, 15%);
@@ -103,6 +112,8 @@ form
   margin: 1rem;
   padding: 1rem;
   position: relative;
+  &.faded
+    opacity: .2;
   a
     display: inline-block;
     color: red;
@@ -112,14 +123,16 @@ form
     border-bottom: 4px solid purple;
     a
       color: darken(red, 15%);
+  .tag-container
+    position: absolute;
+    right: 2%;
+    top: 25%;
   .tag
     background: #ddd;
     color: #222;
+    display: inline-block;
     font-size: .8rem;
     padding: .5rem;
-    position: absolute;
-    right: 5%;
-    top: 25%;
     &[data-tag='javascript']
       background: #EBEB2A;
     &[data-tag='python']
