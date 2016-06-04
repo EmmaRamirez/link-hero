@@ -11,6 +11,8 @@
   let importLink = document.querySelector('.import-all-links');
   let linkExportImport = document.querySelector('.link-export-import');
   let linkTagsFilterToggle = 2;
+  let settingsIcon = document.querySelector('.settings-icon');
+  let settingsClose = document.querySelector('.close-settings');
   let tag;
   let tags;
   let links = [

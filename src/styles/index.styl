@@ -23,7 +23,7 @@ header
     position: absolute;
     right: 1rem;
     top: 1rem;
-    &:active
+    &:active, &.active
       color: darken(purple, 15%);
 .settings
   border: 1px solid #eee;
@@ -32,17 +32,25 @@ header
   color: #333;
   padding: .5rem;
   padding-top: 0;
+  position: relative;
   h2
     border-bottom: 1px solid #eee;
     margin: .4rem;
     text-align: center;
     padding: .25rem;
-  select
+  select, input
     border: 1px solid #eee;
     border-radius: 4px;
     font-size: .9rem;
     margin-left: .5rem;
     padding: .25rem;
+  .close-settings
+    color: #333;
+    position: absolute;
+    cursor: pointer;
+    right: 1rem;
+    top: .5rem;
+
 
 
 form
