@@ -5,10 +5,12 @@
   let addLinkButton = document.querySelector('.add-link-button');
   let linkFilter = document.querySelector('.link-filter');
   let linkForm = document.querySelector('.link-form');
+  let linkTagsFilter = document.querySelector('.link-tags-filter');
   let removeAllLinks = document.querySelector('.remove-all-links');
   let exportLink = document.querySelector('.export-all-links');
   let importLink = document.querySelector('.import-all-links');
   let linkExportImport = document.querySelector('.link-export-import');
+  let linkTagsFilterToggle = 2;
   let tag;
   let tags;
   let links = [
@@ -31,16 +33,14 @@
   }
 
   function loadLinks () {
-    if (store.get('links')  {
+    if (store.get('links'))  {
       links = store.get('links');
     } else {
       links = links;
     }
   }
 
-
-  function createLinks () {
-    linkContainer.innerHTML = '';
+  function sortLinks() {
     links.sort(function (a, b) {
       var nameA = a.name.toUpperCase();
       var nameB = b.name.toUpperCase();
@@ -56,14 +56,22 @@
       if (nameA > nameB) return 1;
       return 0;
     });
+  }
+
+
+  function createLinks (sort = false) {
+    if (sort === true) {
+      sortLinks();
+    }
+    linkContainer.innerHTML = '';
 
     for (let i = 0; i < links.length; i++) {
-      if (links[i].tags !== []) {
-        tag = `<div class='tag' data-tag='${links[i].tags[0]}'>
-          ${links[i].tags[0]}
-        </div>`;
-      } else {
-        tag = '';
+      tag = '';
+      for (let j = 0; j < links[i].tags.length; j++) {
+        tag += `
+          <div class='tag' data-tag='${links[i].tags[j]}'>
+            ${links[i].tags[j]}
+          </div>`;
       }
       linkContainer.innerHTML += `
         <div class='link'>
@@ -71,7 +79,9 @@
           <a target="_blank" title='${links[i].url}' href='${links[i].url}'>
             ${links[i].name}
           </a>
-          ${tag}
+          <div class='tag-container'>
+            ${tag}
+          </div>
           <i title='delete' data-index=${i} class='fa fa-trash delete-link'></i>
         </div>`;
     }
@@ -88,10 +98,35 @@
         links[i].favorite = f;
         favorite.setAttribute('data-favorite', f);
         saveLinks();
-        createLinks();
+        createLinks(true);
       });
     });
 
+  }
+
+  function handleTagSort() {
+    linkTagsFilter.addEventListener('click', function() {
+      event.preventDefault();
+      if (linkTagsFilterToggle % 2 === 0) {
+        links.sort(function (a, b) {
+          var tagA = a.tags[0];
+          var tagB = b.tags[0];
+          if (tagA > tagB) return -1;
+          if (tagA < tagB) return 1;
+          return 0;
+        });
+      } else {
+        links.sort(function (a, b) {
+          var tagA = a.tags[0];
+          var tagB = b.tags[0];
+          if (tagA > tagB) return 1;
+          if (tagA < tagB) return -1;
+          return 0;
+        });
+      }
+      createLinks();
+      linkTagsFilterToggle++;
+    });
   }
 
   function handleDeleteLink() {
@@ -102,7 +137,7 @@
         let i = deletes.getAttribute('data-index');
         links.splice(i, 1);
         createLinks();
-        saveLinks();
+        saveLinks(true);
       });
     });
 
@@ -114,6 +149,7 @@
       if (f === 'true') {
         linkForm.setAttribute('data-hidden', 'false');
         addLink.innerHTML = "<i class='fa fa-minus'></i>";
+        document.querySelector('.link-url').focus();
       } else {
         addLink.innerHTML = "<i class='fa fa-plus'></i>";
         linkForm.setAttribute('data-hidden', 'true');
@@ -157,7 +193,7 @@
     removeAllLinks.addEventListener('click', function () {
       event.preventDefault();
       links = [];
-      createLinks();
+      createLinks(true);
       saveLinks();
     }
   }
@@ -168,9 +204,16 @@
       let resultString = '';
       event.preventDefault();
       for (let i = 0; i < links.length; i++) {
-        resultString += links[i].url + '|' + links[i].name + '|' + links[i].tags[0] + '|' + links[i].favorite + '|';
+        resultString += `
+          {
+            url: '${links[i].url}'
+            name: '${links[i].name}'
+            tags: ['${links[i].tags[0]}']
+            favorite: '${links[i].favorite}'
+          }
+        `
       }
-      resultString += ';';
+      resultString += ',';
       linkExportImport.textContent = resultString;
     });
   }
@@ -190,7 +233,7 @@
         }
       }
       links = links.filter(matchesSubString);
-      createLinks();
+      createLinks(true);
 
     });
   }
@@ -204,6 +247,7 @@
     handleLinkFilter();
     handleAddLink();
     handleAddNewLink();
+    handleTagSort();
     handleRemoveAllLinks();
     handleExportLink();
     handleImportLink();
