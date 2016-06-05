@@ -9,12 +9,33 @@
   let removeAllLinks = document.querySelector('.remove-all-links');
   let exportLink = document.querySelector('.export-all-links');
   let importLink = document.querySelector('.import-all-links');
+  let linkAlphaSort = document.querySelector('.link-alpha-sort');
   let linkExportImport = document.querySelector('.link-export-import');
   let linkTagsFilterToggle = 2;
+  let settingsToggle = 2;
+  let settingsContainer = document.querySelector('.settings');
   let settingsIcon = document.querySelector('.settings-icon');
   let settingsClose = document.querySelector('.close-settings');
+  let addNewTag = document.querySelector('.add-new-tag');
+  let userTagColorsContainer = document.querySelector('.user-tag-colors');
+  let tagColorsStyle = document.querySelector('#tag-colors');
   let tag;
   let tags;
+  let customCSS = '';
+  let tagColors = [
+    {
+      tag: 'javascript',
+      color: '#EBEB2A',
+    },
+    {
+      tag: 'haskell',
+      color: '#A654D6',
+    },
+    {
+      tag: 'react',
+      color: '#80D2ED',
+    }
+  ];
   let links = [
     {
       url: 'http://www.google.com',
@@ -34,12 +55,45 @@
     store.set('links', links);
   }
 
+  function saveTags() {
+    store.set('tags', tagColors);
+  }
+
   function loadLinks () {
     if (store.get('links'))  {
       links = store.get('links');
     } else {
       links = links;
     }
+  }
+
+  function loadTags () {
+    if (store.get('tags')) {
+      tagColors = store.get('tags');
+    } else {
+      tagColors = tagColors;
+    }
+  }
+
+  function createTags() {
+    let styleString = '';
+    userTagColorsContainer.innerHTML = '';
+    sortTagColors();
+
+    for (let i = 0; i < tagColors.length; i++) {
+      userTagColorsContainer.innerHTML += `
+      <label data-id='${i}' class='tag-color-container'>
+        ${tagColors[i].tag}
+        <div class='tag-color' style='background:${tagColors[i].color}'></div>
+        <div class='tag-color-options'>
+          <div  data-id='${i}' class='tag-color-option delete-tag'>Delete</div>
+          <!--<div  data-id='${i}' class='tag-color-option'>Edit</div>-->
+        </div>
+      </label>
+      `;
+      styleString += `.link .tag[data-tag='${tagColors[i].tag}'] { background: ${tagColors[i].color}; }`;
+    }
+    tagColorsStyle.innerHTML = styleString;
   }
 
   function sortLinks() {
@@ -51,6 +105,10 @@
       return 0;
     });
 
+    sortFavorites();
+  }
+
+  function sortFavorites() {
     links.sort(function (a, b) {
       var nameA = a.favorite.toUpperCase();
       var nameB = b.favorite.toUpperCase();
@@ -58,6 +116,16 @@
       if (nameA > nameB) return 1;
       return 0;
     });
+  }
+
+  function sortTagColors() {
+    tagColors.sort(function (a, b) {
+      let nameA = a.tag.toUpperCase();
+      let nameB = b.tag.toUpperCase();
+      if (nameA < nameB) return -1;
+      if (nameA > nameB) return 1;
+      return 0;
+    })
   }
 
 
@@ -117,6 +185,7 @@
           if (tagA < tagB) return 1;
           return 0;
         });
+        sortFavorites();
       } else {
         links.sort(function (a, b) {
           var tagA = a.tags[0];
@@ -125,9 +194,22 @@
           if (tagA < tagB) return -1;
           return 0;
         });
+        sortFavorites();
       }
       createLinks();
       linkTagsFilterToggle++;
+    });
+  }
+
+  function handleAddNewTag() {
+    addNewTag.addEventListener('click', function () {
+      let tagColorColor = document.querySelector('.tag-color-color');
+      let tagColorTag = document.querySelector('.tag-color-tag');
+      tagColors.push({ tag: tagColorTag.textContent, color: tagColorColor.textContent });
+      tagColorColor.textContent = '';
+      tagColorTag.textContent = '';
+      createTags();
+      saveTags();
     });
   }
 
@@ -143,6 +225,19 @@
       });
     });
 
+  }
+
+  function handleDeleteTag() {
+    let deletes = document.querySelectorAll('.delete-tag');
+
+    Array.from(deletes).forEach(deletes => {
+      deletes.addEventListener('click', function () {
+        let i = deletes.getAttribute('data-index');
+        tagColors.splice(i, 1);
+        createTags();
+        saveTags();
+      })
+    })
   }
 
   function handleAddLink() {
@@ -240,16 +335,51 @@
     });
   }
 
+  function handleLinkAlphaSort() {
+    linkAlphaSort.addEventListener('click', function () {
+      createLinks(true);
+    });
+  }
+
+  function handleSettingsClose() {
+    settingsClose.addEventListener('click', function () {
+      settingsContainer.setAttribute('data-hidden', 'true');
+      settingsIcon.className = 'fa fa-gear settings-icon';
+      settingsToggle = 2;
+    });
+  }
+
+  function handleSettingsIcon() {
+    settingsIcon.addEventListener('click', function () {
+      if (settingsToggle % 2 == 0) {
+        settingsContainer.setAttribute('data-hidden', 'false');
+        this.className += ' active';
+      } else {
+        settingsContainer.setAttribute('data-hidden', 'true');
+        settingsIcon.className = 'fa fa-gear settings-icon';
+      }
+      settingsToggle++;
+    });
+  }
+
   function init() {
     linkExportImport.setAttribute('data-hidden', 'true');
+    settingsContainer.setAttribute('data-hidden', 'true');
     loadLinks();
-    createLinks();
+    loadTags();
+    createLinks(true);
+    createTags();
     handleFavoriteStar();
     handleDeleteLink();
     handleLinkFilter();
+    handleLinkAlphaSort();
     handleAddLink();
     handleAddNewLink();
     handleTagSort();
+    handleAddNewTag();
+    handleDeleteTag();
+    handleSettingsIcon();
+    handleSettingsClose();
     handleRemoveAllLinks();
     handleExportLink();
     handleImportLink();
