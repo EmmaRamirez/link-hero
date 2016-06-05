@@ -19,6 +19,7 @@
   let addNewTag = document.querySelector('.add-new-tag');
   let userTagColorsContainer = document.querySelector('.user-tag-colors');
   let tagColorsStyle = document.querySelector('#tag-colors');
+  let customCSSInput = document.querySelector('.custom-css');
   let tag;
   let tags;
   let customCSS = '';
@@ -128,6 +129,12 @@
     })
   }
 
+  function handleCustomCSS() {
+    // customCSSInput.addEventListener('keypress', function() {
+    //   customCSS = this.textContent;
+    //   document.head.innerHTML += '<style>' + customCSS + '</style>';
+    // });
+  }
 
   function createLinks (sort = false) {
     if (sort === true) {
@@ -206,8 +213,8 @@
       let tagColorColor = document.querySelector('.tag-color-color');
       let tagColorTag = document.querySelector('.tag-color-tag');
       tagColors.push({ tag: tagColorTag.textContent, color: tagColorColor.textContent });
-      tagColorColor.textContent = '';
-      tagColorTag.textContent = '';
+      tagColorColor.textContent = 'Tag Name';
+      tagColorTag.textContent = '#ff0000';
       createTags();
       saveTags();
     });
@@ -292,7 +299,7 @@
       links = [];
       createLinks(true);
       saveLinks();
-    }
+    });
   }
 
   function handleExportLink() {
@@ -376,6 +383,7 @@
     handleAddLink();
     handleAddNewLink();
     handleTagSort();
+    handleCustomCSS();
     handleAddNewTag();
     handleDeleteTag();
     handleSettingsIcon();
