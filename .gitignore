@@ -4,6 +4,7 @@ ehthumbs.db
 
 /node_modules/
 /dist/
+/src/scripts/index.js
 
 # Folder config file
 Desktop.ini
